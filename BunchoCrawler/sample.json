@@ -1,0 +1,103 @@
+{
+    "attachments": [
+        {
+            "fallback": "",
+            "color": "",
+            "pretext": "",
+            "author_name": "",
+            "author_link": "",
+            "author_icon": "",
+            "title": "ブンチョウ ヒナ(サクラ) ｜ フィンチ系ヒナ",
+            "title_link": "https://api.slack.com/",
+            "text": "竹ノ塚店に久々にブンチョウさんがやってきました‼",
+            "fields": [
+                {
+                    "title": "価格",
+                    "value": "￥7,980",
+                    "short": false
+                },
+				{
+                    "title": "匹数",
+                    "value": "１",
+                    "short": false
+                },
+				{
+                    "title": "店舗",
+                    "value": "竹ノ塚店",
+                    "short": false
+                }
+            ],
+            "image_url": "http://d3utmhtlcphhyc.cloudfront.net/files/topics/236809_ext_33_1_L.jpg?1492847685&.cache.jpg",
+            "thumb_url": "https://blog-001.west.edge.storage-yahoo.jp/res/blog-a0-01/galuda6/folder/258481/62/31202762/img_0?1263310483",
+            "footer": "ペットショップのコジマ",
+            "footer_icon": "https://www.google.com/s2/favicons?domain=pets-kojima.com",
+            "ts": 0
+        },
+		{
+            "fallback": "",
+            "color": "",
+            "pretext": "",
+            "author_name": "",
+            "author_link": "",
+            "author_icon": "",
+            "title": "ブンチョウ ヒナ(サクラ) ｜ フィンチ系ヒナ",
+            "title_link": "https://api.slack.com/",
+            "text": "竹ノ塚店に久々にブンチョウさんがやってきました‼",
+            "fields": [
+                {
+                    "title": "価格",
+                    "value": "￥7,980",
+                    "short": false
+                },
+				{
+                    "title": "匹数",
+                    "value": "１",
+                    "short": false
+                },
+				{
+                    "title": "店舗",
+                    "value": "竹ノ塚店",
+                    "short": false
+                }
+            ],
+            "image_url": "http://d3utmhtlcphhyc.cloudfront.net/files/topics/236809_ext_33_1_L.jpg?1492847685&.cache.jpg",
+            "thumb_url": "https://blog-001.west.edge.storage-yahoo.jp/res/blog-a0-01/galuda6/folder/258481/62/31202762/img_0?1263310483",
+            "footer": "ペットショップのコジマ",
+            "footer_icon": "https://www.google.com/s2/favicons?domain=pets-kojima.com",
+            "ts": 0
+        },
+		{
+            "fallback": "",
+            "color": "",
+            "pretext": "",
+            "author_name": "",
+            "author_link": "",
+            "author_icon": "",
+            "title": "ブンチョウ ヒナ(サクラ) ｜ フィンチ系ヒナ",
+            "title_link": "https://api.slack.com/",
+            "text": "竹ノ塚店に久々にブンチョウさんがやってきました‼",
+            "fields": [
+                {
+                    "title": "価格",
+                    "value": "￥7,980",
+                    "short": false
+                },
+				{
+                    "title": "匹数",
+                    "value": "１",
+                    "short": false
+                },
+				{
+                    "title": "店舗",
+                    "value": "竹ノ塚店",
+                    "short": false
+                }
+            ],
+            "image_url": "http://d3utmhtlcphhyc.cloudfront.net/files/topics/236809_ext_33_1_L.jpg?1492847685&.cache.jpg",
+            "thumb_url": "https://blog-001.west.edge.storage-yahoo.jp/res/blog-a0-01/galuda6/folder/258481/62/31202762/img_0?1263310483",
+            "footer": "ペットショップのコジマ",
+            "footer_icon": "https://www.google.com/s2/favicons?domain=pets-kojima.com",
+            "ts": 0
+        }
+    ]
+}
