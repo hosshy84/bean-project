@@ -25,3 +25,6 @@ _testmain.go
 
 # Debug
 debug
+
+#Config
+config.json

@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -55,6 +56,11 @@ func Filter(t time.Time) (ret Attachments) {
 	return nil
 }
 
+type Config struct {
+	Site    string   `json:"site"`
+	History []string `json:"history"`
+}
+
 func Map(s *goquery.Selection) (ret Attachment) {
 	title := s.Find("td.sca_name2 a").Text()
 	attr, _ := s.Find("td.sca_name2 a").Attr("href")
@@ -100,17 +106,45 @@ func Map(s *goquery.Selection) (ret Attachment) {
 
 func main() {
 	target := "http://pets-kojima.com/small_list/?topics_group_id=4&group=&shop%5B%5D=tokyo01&freeword=%E3%83%96%E3%83%B3%E3%83%81%E3%83%A7%E3%82%A6&price_bottom=&price_upper=&order_type=2"
+
+	var config Config
+	file, err := ioutil.ReadFile("config.json")
+	if err == nil {
+		json.Unmarshal(file, &config)
+	}
+
 	doc, err := goquery.NewDocument(target)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
 	var attachments []Attachment
+	var histories []string
 	doc.Find("div.sca_table2").Each(func(_ int, s *goquery.Selection) {
-		// title := s.Find("td.sca_name2 a").Text()
 		attachment := Map(s)
-		attachments = append(attachments, attachment)
+		contains := false
+		for _, history := range config.History {
+			if attachment.TitleLink == history {
+				contains = true
+				break
+			}
+		}
+		if !contains {
+			attachments = append(attachments, attachment)
+		}
+		histories = append(histories, attachment.TitleLink)
 	})
+
+	writeConfig, _ := json.Marshal(Config{
+		Site:    "kojima",
+		History: histories,
+	})
+	ioutil.WriteFile("config.json", writeConfig, os.ModePerm)
+
+	if len(attachments) == 0 {
+		return
+	}
 
 	params, _ := json.Marshal(Slack{
 		Text:        fmt.Sprintf("本日のブンチョウたち（%s）", time.Now().Format("2006-01-02")),
