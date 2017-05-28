@@ -105,7 +105,7 @@ func Map(s *goquery.Selection) (ret Attachment) {
 }
 
 func main() {
-	target := "http://pets-kojima.com/small_list/?topics_group_id=4&group=&shop%5B%5D=tokyo01&freeword=%E3%83%96%E3%83%B3%E3%83%81%E3%83%A7%E3%82%A6&price_bottom=&price_upper=&order_type=2"
+	target := "http://pets-kojima.com/small_list/?topics_group_id=4&group=&shop%5B%5D=56529&shop%5B%5D=15&shop%5B%5D=54&shop%5B%5D=148&shop%5B%5D=149&shop%5B%5D=150&shop%5B%5D=151&shop%5B%5D=152&shop%5B%5D=153&shop%5B%5D=154&shop%5B%5D=155&shop%5B%5D=156&shop%5B%5D=145&shop%5B%5D=157&shop%5B%5D=158&shop%5B%5D=91960&shop%5B%5D=159&shop%5B%5D=160&shop%5B%5D=161&shop%5B%5D=187095&shop%5B%5D=170&price_bottom=&price_upper=&freeword=%E3%83%96%E3%83%B3%E3%83%81%E3%83%A7%E3%82%A6&order_type=2&x=99&y=38"
 
 	var config Config
 	file, err := ioutil.ReadFile("config.json")
