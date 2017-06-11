@@ -104,8 +104,8 @@ func Map(s *goquery.Selection) (ret Attachment) {
 	}
 }
 
-func main() {
-	target := "http://pets-kojima.com/small_list/?topics_group_id=4&group=&shop%5B%5D=56529&shop%5B%5D=15&shop%5B%5D=54&shop%5B%5D=148&shop%5B%5D=149&shop%5B%5D=150&shop%5B%5D=151&shop%5B%5D=152&shop%5B%5D=153&shop%5B%5D=154&shop%5B%5D=155&shop%5B%5D=156&shop%5B%5D=145&shop%5B%5D=157&shop%5B%5D=158&shop%5B%5D=91960&shop%5B%5D=159&shop%5B%5D=160&shop%5B%5D=161&shop%5B%5D=187095&shop%5B%5D=170&price_bottom=&price_upper=&freeword=%E3%83%96%E3%83%B3%E3%83%81%E3%83%A7%E3%82%A6&order_type=2&x=99&y=38"
+func kojima() {
+	target := "http://pets-kojima.com/small_list/?topics_group_id=4&group=&shop%5B%5D=tokyo01&freeword=%E3%83%96%E3%83%B3%E3%83%81%E3%83%A7%E3%82%A6&price_bottom=&price_upper=&order_type=2"
 
 	var config Config
 	file, err := ioutil.ReadFile("config.json")
@@ -164,4 +164,117 @@ func main() {
 	defer resp.Body.Close()
 
 	fmt.Println(string(body))
+}
+
+func MapTorishin(s *goquery.Selection) (ret Attachment) {
+	title := s.Find("td:nth-child(2)").Text()
+	linkURL := "http://pet-nobu.com/"
+	price := s.Find("td:nth-child(4)").Text()
+	number := s.Find("td:nth-child(6)").Text()
+	shop := "足立本店"
+	comment := s.Find("td:nth-child(10)").Text()
+	attr, _ := s.Find("td:nth-child(8) > a").Attr("href")
+	imageURL := "http://pet-nobu.com/" + attr
+
+	rand.Seed(time.Now().UnixNano())
+	r := rand.Intn(255)
+	g := rand.Intn(255)
+	b := rand.Intn(255)
+	color := fmt.Sprintf("#%X%X%X", r, g, b)
+
+	var fields [3]Field
+	fields[0] = Field{
+		Title: "価格",
+		Value: price,
+		Short: false,
+	}
+	fields[1] = Field{
+		Title: "匹数",
+		Value: number,
+		Short: false,
+	}
+	fields[2] = Field{
+		Title: "店舗",
+		Value: shop,
+		Short: false,
+	}
+	return Attachment{
+		Color:      color,
+		Title:      title,
+		TitleLink:  linkURL,
+		Fields:     fields,
+		Text:       comment,
+		ImageURL:   imageURL,
+		Footer:     "ペットショップ鳥信",
+		FooterIcon: "http://pet-nobu.com//image/icon/favicon.ico",
+	}
+}
+
+func torishin() {
+	target := "http://pet-nobu.com/"
+
+	var config Config
+	file, err := ioutil.ReadFile("torishin.json")
+	if err == nil {
+		json.Unmarshal(file, &config)
+	}
+
+	doc, err := goquery.NewDocument(target)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	var attachments []Attachment
+	var histories []string
+	doc.Find("body > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2) > table > tbody > tr:nth-child(4) > td > table:has(tr > td > table > tbody > tr > td:contains('新着入荷速報'))").Each(func(_ int, s *goquery.Selection) {
+		s.Find("tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > center > table > tbody > tr:has(td:contains('文鳥'))").Each(func(_ int, s2 *goquery.Selection) {
+			attachment := MapTorishin(s2)
+			contains := false
+			for _, history := range config.History {
+				if attachment.ImageURL == history {
+					contains = true
+					break
+				}
+			}
+			if !contains {
+				attachments = append(attachments, attachment)
+			}
+			histories = append(histories, attachment.ImageURL)
+		})
+	})
+
+	writeConfig, _ := json.Marshal(Config{
+		Site:    "torishin",
+		History: histories,
+	})
+	ioutil.WriteFile("torishin.json", writeConfig, os.ModePerm)
+
+	if len(attachments) == 0 {
+		return
+	}
+
+	params, _ := json.Marshal(Slack{
+		Text:        fmt.Sprintf("本日のブンチョウたち（%s）", time.Now().Format("2006-01-02")),
+		Username:    "Buncho Bot",
+		IconEmoji:   "",
+		IconURL:     "https://blog-001.west.edge.storage-yahoo.jp/res/blog-a0-01/galuda6/folder/258481/62/31202762/img_0?1263310483",
+		Channel:     "#bot_test",
+		Attachments: attachments,
+	})
+
+	resp, _ := http.PostForm(
+		IncomingURL,
+		url.Values{"payload": {string(params)}},
+	)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+
+	fmt.Println(string(body))
+}
+
+func main() {
+	kojima()
+	torishin()
 }
